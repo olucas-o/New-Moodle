@@ -1,0 +1,206 @@
+/* ===============================
+   FRONT PAGE — CELEBRA THEME
+   =============================== */
+
+.frontpage-celebra {
+  background: #f5f7f9;
+}
+
+/* CONTAINER */
+.frontpage-celebra .wrap {
+  max-width: 1300px;
+  margin: 18px auto;
+  padding: 16px;
+}
+
+/* ===============================
+   HEADER
+   =============================== */
+
+.frontpage-celebra header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(2, 6, 23, 0.06);
+  margin-bottom: 18px;
+}
+
+.frontpage-celebra .brand img {
+  height: 44px;
+  width: auto;
+}
+
+/* ÍCONES */
+.frontpage-celebra .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.frontpage-celebra .hdr-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frontpage-celebra .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef2f4;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+/* ===============================
+   SEÇÕES
+   =============================== */
+
+.frontpage-celebra .row {
+  margin: 14px 0;
+}
+
+.frontpage-celebra .row h2 {
+  margin: 0 0 10px 4px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #064c53;
+}
+
+/* ===============================
+   CARROSSEL
+   =============================== */
+
+.frontpage-celebra .carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 8px 4px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.frontpage-celebra .carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.frontpage-celebra .carousel::-webkit-scrollbar-thumb {
+  background: rgba(6, 42, 70, 0.12);
+  border-radius: 10px;
+}
+
+/* ===============================
+   CARD DE CURSO (1:1)
+   =============================== */
+
+.frontpage-celebra .poster {
+  position: relative;
+  flex: 0 0 auto;
+  width: 220px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e9f7f0;
+  cursor: pointer;
+  scroll-snap-align: center;
+  box-shadow: 0 8px 24px rgba(6, 42, 70, 0.05);
+  display: flex;
+  align-items: flex-end;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.frontpage-celebra .poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frontpage-celebra .poster:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(6, 42, 70, 0.12);
+}
+
+/* META */
+.frontpage-celebra .poster .meta {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,0.45) 100%
+  );
+  padding: 12px;
+  color: #fff;
+}
+
+.frontpage-celebra .poster h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.05;
+}
+
+.frontpage-celebra .poster p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  opacity: .95;
+}
+
+/* ===============================
+   PROGRESS BAR
+   =============================== */
+
+.frontpage-celebra .progress {
+  height: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.frontpage-celebra .progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #27a97b, #19b07a);
+  width: 0%;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (min-width: 900px) {
+  .frontpage-celebra .poster {
+    width: 320px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .frontpage-celebra .poster {
+    width: 380px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .frontpage-celebra header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .frontpage-celebra .header-actions {
+    margin-left: auto;
+  }
+}

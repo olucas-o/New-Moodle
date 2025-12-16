@@ -1,28 +1,71 @@
-<div class="wrap">
+{{!
+  Frontpage - Instituto Celebra
+  Dados vindos do renderer:
+  - mycourses[]
+  - recommended[]
+}}
 
-  {{> theme_celebra/header }}
+<div class="celebra-frontpage frontpage-celebra">
 
-  <main class="section-grid">
+  {{! =========================
+      MEUS CURSOS
+      ========================= }}
+  <section class="celebra-section">
+    <h2 class="celebra-title">Meus Cursos</h2>
 
-    <section class="row">
-      <h2>Meus Cursos</h2>
+    <div class="celebra-carousel carousel">
+      {{#mycourses}}
+      <a
+        href="{{url}}"
+        class="celebra-poster celebra-poster--large poster"
+        aria-label="{{fullname}}"
+        data-progress="{{progress}}"
+      >
+        <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
-      <div class="carousel">
-        {{#mycourses}}
-          {{> theme_celebra/course_poster }}
-        {{/mycourses}}
+        <div class="celebra-meta meta">
+          <h3 class="celebra-course-title">{{fullname}}</h3>
+
+          <div class="celebra-progress progress" aria-hidden="true">
+            <i style="width: {{progress}}%"></i>
+          </div>
+
+          <small class="celebra-progress-label">
+            {{progress}}% concluído
+          </small>
+        </div>
+      </a>
+      {{/mycourses}}
+
+      {{^mycourses}}
+      <div class="celebra-empty">
+        Você ainda não está matriculado em nenhum curso.
       </div>
-    </section>
+      {{/mycourses}}
+    </div>
+  </section>
 
-    <section class="row">
-      <h2>Recomendados</h2>
+  {{! =========================
+      RECOMENDADOS
+      ========================= }}
+  <section class="celebra-section">
+    <h2 class="celebra-title">Recomendados</h2>
 
-      <div class="carousel">
-        {{#recommended}}
-          {{> theme_celebra/course_poster_small }}
-        {{/recommended}}
-      </div>
-    </section>
+    <div class="celebra-carousel carousel">
+      {{#recommended}}
+      <a
+        href="{{url}}"
+        class="celebra-poster celebra-poster--small poster"
+        aria-label="{{fullname}}"
+      >
+        <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
-  </main>
+        <div class="celebra-meta meta">
+          <h3 class="celebra-course-title small">{{fullname}}</h3>
+        </div>
+      </a>
+      {{/recommended}}
+    </div>
+  </section>
+
 </div>
