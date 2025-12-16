@@ -1,0 +1,28 @@
+<div class="wrap">
+
+  {{> theme_celebra/header }}
+
+  <main class="section-grid">
+
+    <section class="row">
+      <h2>Meus Cursos</h2>
+
+      <div class="carousel">
+        {{#mycourses}}
+          {{> theme_celebra/course_poster }}
+        {{/mycourses}}
+      </div>
+    </section>
+
+    <section class="row">
+      <h2>Recomendados</h2>
+
+      <div class="carousel">
+        {{#recommended}}
+          {{> theme_celebra/course_poster_small }}
+        {{/recommended}}
+      </div>
+    </section>
+
+  </main>
+</div>
