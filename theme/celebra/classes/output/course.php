@@ -1,11 +1,11 @@
 <?php
 namespace theme_celebra\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 use renderable;
 use templatable;
 use renderer_base;
+
+defined('MOODLE_INTERNAL') || die();
 
 class course implements renderable, templatable {
 
@@ -16,41 +16,56 @@ class course implements renderable, templatable {
     }
 
     public function export_for_template(renderer_base $output) {
-        global $USER, $CFG;
-
-        require_once($CFG->libdir . '/completionlib.php');
-
-        $course = $this->course;
-        $modinfo = get_fast_modinfo($course, $USER->id);
-        $completion = new \completion_info($course);
+        global $USER, $DB;
 
         $modules = [];
 
-        foreach ($modinfo->get_cms() as $cm) {
+        // busca atividades do curso
+        $modinfo = get_fast_modinfo($this->course, $USER->id);
 
-            // Ignora itens invisíveis ou sem visualização
+        foreach ($modinfo->cms as $cm) {
             if (!$cm->uservisible) {
                 continue;
             }
 
-            // Estado de conclusão
-            $progress = 0;
-            if ($completion->is_enabled($cm)) {
-                $data = $completion->get_data($cm, false, $USER->id);
-                $progress = ($data->completionstate == COMPLETION_COMPLETE) ? 100 : 0;
+            // só atividades com conclusão
+            if (!$cm->completion) {
+                continue;
+            }
+
+            // progresso real do módulo
+            $completion = new \completion_info($this->course);
+            $state = $completion->get_data($cm, false, $USER->id);
+            $progress = ($state && $state->completionstate == COMPLETION_COMPLETE) ? 100 : 0;
+
+            // Vimeo ID vem da descrição (campo customizado ou padrão)
+            $vimeoid = '';
+            if (!empty($cm->content)) {
+                if (preg_match('/vimeo\.com\/(\d+)/', $cm->content, $m)) {
+                    $vimeoid = $m[1];
+                }
             }
 
             $modules[] = [
-                'cmid'     => $cm->id,
-                'name'     => format_string($cm->name),
-                'progress' => $progress
+                'cmid'        => $cm->id,
+                'name'        => $cm->name,
+                'progress'    => $progress,
+                'vimeoid'     => $vimeoid,
+                'description' => strip_tags($cm->content ?? ''),
             ];
         }
 
         return [
-            'courseid' => $course->id,
-            'fullname' => format_string($course->fullname),
-            'modules'  => $modules
+            'coursefullname' => $this->course->fullname,
+            'introvideo'     => $this->get_intro_vimeo(),
+            'modules'        => $modules,
         ];
+    }
+
+    private function get_intro_vimeo(): string {
+        if (preg_match('/vimeo\.com\/(\d+)/', $this->course->summary, $m)) {
+            return $m[1];
+        }
+        return '';
     }
 }

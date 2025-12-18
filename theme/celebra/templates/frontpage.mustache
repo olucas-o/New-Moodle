@@ -1,11 +1,11 @@
 {{!
-  Frontpage - Instituto Celebra
-  Dados vindos do renderer:
+  Frontpage — Instituto Celebra
+  Dados:
   - mycourses[]
   - recommended[]
 }}
 
-<div class="celebra-frontpage frontpage-celebra">
+<div class="celebra-frontpage">
 
   {{! =========================
       MEUS CURSOS
@@ -13,21 +13,16 @@
   <section class="celebra-section">
     <h2 class="celebra-title">Meus Cursos</h2>
 
-    <div class="celebra-carousel carousel">
+    <div class="celebra-carousel">
       {{#mycourses}}
-      <a
-        href="{{url}}"
-        class="celebra-poster celebra-poster--large poster"
-        aria-label="{{fullname}}"
-        data-progress="{{progress}}"
-      >
+      <a href="{{url}}" class="celebra-poster celebra-poster--large" aria-label="{{fullname}}">
         <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
-        <div class="celebra-meta meta">
+        <div class="celebra-meta">
           <h3 class="celebra-course-title">{{fullname}}</h3>
 
-          <div class="celebra-progress progress" aria-hidden="true">
-            <i style="width: {{progress}}%"></i>
+          <div class="celebra-progress">
+            <span style="width: {{progress}}%"></span>
           </div>
 
           <small class="celebra-progress-label">
@@ -48,24 +43,22 @@
   {{! =========================
       RECOMENDADOS
       ========================= }}
+  {{#recommended}}
   <section class="celebra-section">
-    <h2 class="celebra-title">Recomendados</h2>
+    <h2 class="celebra-title">Recomendados para você</h2>
 
-    <div class="celebra-carousel carousel">
+    <div class="celebra-carousel">
       {{#recommended}}
-      <a
-        href="{{url}}"
-        class="celebra-poster celebra-poster--small poster"
-        aria-label="{{fullname}}"
-      >
+      <a href="{{url}}" class="celebra-poster celebra-poster--small" aria-label="{{fullname}}">
         <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
-        <div class="celebra-meta meta">
+        <div class="celebra-meta">
           <h3 class="celebra-course-title small">{{fullname}}</h3>
         </div>
       </a>
       {{/recommended}}
     </div>
   </section>
+  {{/recommended}}
 
 </div>

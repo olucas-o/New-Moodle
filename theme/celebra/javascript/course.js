@@ -1,174 +1,61 @@
-/**
- * ======================================================
- * COURSE PAGE — Instituto Celebra
- * ======================================================
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-
-  /* =========================
-     ELEMENTOS
-     ========================= */
 
   const modal = document.querySelector('.celebra-modal');
   const backdrop = document.querySelector('.celebra-modal-backdrop');
-  const modalTitle = document.querySelector('.celebra-modal-title');
-  const videoContainer = document.querySelector('.celebra-modal-video');
-  const completeBtn = document.querySelector('.celebra-complete-btn');
+  const iframe = document.getElementById('celebra-vimeo-player');
+  const titleEl = document.getElementById('celebra-modal-title');
+  const descEl = document.getElementById('celebra-modal-description');
+  const completeBtn = document.getElementById('celebra-complete-btn');
 
   let player = null;
-  let watchedPercent = 0;
-  let currentModuleId = null;
-
-  /* =========================
-     ABRIR MODAL
-     ========================= */
+  let cmid = null;
+  let completed = false;
 
   document.querySelectorAll('.celebra-module-card').forEach(card => {
-    card.addEventListener('click', () => openModule(card));
-  });
+    card.addEventListener('click', () => {
+      cmid = card.dataset.cmid;
+      completed = false;
 
-  function openModule(card) {
-    currentModuleId = card.dataset.moduleid;
+      titleEl.textContent = card.dataset.name;
+      descEl.textContent = card.dataset.description;
 
-    const title = card.querySelector('strong')?.innerText || 'Conteúdo';
-    const vimeoId = card.dataset.vimeoId;
-    const duration = Number(card.dataset.duration || 0);
+      iframe.src = `https://player.vimeo.com/video/${card.dataset.vimeoid}?api=1&player_id=celebra-player`;
 
-    modalTitle.textContent = title;
-    completeBtn.disabled = true;
-    watchedPercent = 0;
+      modal.hidden = false;
+      backdrop.hidden = false;
 
-    openModal();
-    loadVimeo(vimeoId, duration);
-  }
+      completeBtn.disabled = true;
+      completeBtn.textContent = 'Assista 90% para concluir';
 
-  /* =========================
-     MODAL OPEN / CLOSE
-     ========================= */
+      player = new Vimeo.Player(iframe);
 
-  function openModal() {
-    modal.style.display = 'flex';
-    backdrop.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    modal.style.display = 'none';
-    backdrop.style.display = 'none';
-    document.body.style.overflow = '';
-    destroyPlayer();
-  }
-
-  backdrop?.addEventListener('click', closeModal);
-  document.querySelector('.celebra-modal-close')
-    ?.addEventListener('click', closeModal);
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
-
-  /* =========================
-     VIMEO PLAYER
-     ========================= */
-
-  function loadVimeo(vimeoId, duration) {
-    videoContainer.innerHTML = `
-      <iframe
-        src="https://player.vimeo.com/video/${vimeoId}?autoplay=1&muted=0"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
-    `;
-
-    if (!window.Vimeo) {
-      loadVimeoSDK(() => initPlayer(duration));
-    } else {
-      initPlayer(duration);
-    }
-  }
-
-  function loadVimeoSDK(callback) {
-    const script = document.createElement('script');
-    script.src = 'https://player.vimeo.com/api/player.js';
-    script.onload = callback;
-    document.body.appendChild(script);
-  }
-
-  function initPlayer(duration) {
-    const iframe = videoContainer.querySelector('iframe');
-    player = new Vimeo.Player(iframe);
-
-    player.on('timeupdate', data => {
-      watchedPercent = Math.round((data.seconds / duration) * 100);
-      checkCompletion();
+      player.on('timeupdate', data => {
+        if (!completed && data.percent >= 0.9) {
+          completed = true;
+          completeBtn.disabled = false;
+          completeBtn.textContent = 'Marcar como concluído';
+        }
+      });
     });
-  }
-
-  function destroyPlayer() {
-    if (player) {
-      player.unload();
-      player = null;
-    }
-    videoContainer.innerHTML = '';
-  }
-
-  /* =========================
-     REGRA 90%
-     ========================= */
-
-  function checkCompletion() {
-    if (watchedPercent >= 90) {
-      completeBtn.disabled = false;
-      completeBtn.classList.add('is-unlocked');
-    }
-  }
-
-  /* =========================
-     CONCLUIR MÓDULO (FRONT)
-     ========================= */
-
-  completeBtn?.addEventListener('click', () => {
-    if (completeBtn.disabled) return;
-
-    markModuleAsCompleted(currentModuleId);
-    closeModal();
   });
 
-  function markModuleAsCompleted(moduleId) {
+  completeBtn.addEventListener('click', () => {
+    fetch(M.cfg.wwwroot + '/theme/celebra/ajax/complete.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ cmid })
+    }).then(() => {
+      location.reload();
+    });
+  });
 
-        const cmid = moduleId; // aqui moduleId = cmid do Moodle
+  document.querySelector('.celebra-modal-close').onclick = close;
+  backdrop.onclick = close;
 
-        fetch(M.cfg.wwwroot + '/theme/celebra/ajax/complete_activity.php', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-            cmid: cmid,
-            sesskey: M.cfg.sesskey
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'ok') {
-            updateUIAfterCompletion(cmid);
-            }
-        })
-        .catch(err => console.error(err));
-    }
-
-    function updateUIAfterCompletion(cmid) {
-        const card = document.querySelector(
-            `.celebra-module-card[data-moduleid="${cmid}"]`
-        );
-
-        if (!card) return;
-
-        card.classList.add('is-completed');
-
-        const bar = card.querySelector('.celebra-module-progress span');
-        if (bar) bar.style.width = '100%';
-    }
-
+  function close() {
+    modal.hidden = true;
+    backdrop.hidden = true;
+    iframe.src = '';
+    if (player) player.unload();
+  }
 });

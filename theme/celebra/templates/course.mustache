@@ -1,130 +1,97 @@
 {{!
   Course page — Instituto Celebra
-  Dados esperados do renderer:
-  - coursefullname
-  - introvideo (URL Vimeo ou embed)
-  - modules[]
-    - id
-    - name
-    - progress
-    - url
 }}
 
 <div class="celebra-course">
 
-  {{! =========================
-      HEADER DO CURSO
-      ========================= }}
+  <!-- HERO -->
   <section class="celebra-course-hero">
-
-    <h1 class="celebra-course-title">
-      {{coursefullname}}
-    </h1>
+    <h1 class="celebra-course-title">{{coursefullname}}</h1>
 
     <div class="celebra-video-box">
       {{#introvideo}}
-        <iframe
-          src="{{introvideo}}"
-          frameborder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+      <iframe
+        src="https://player.vimeo.com/video/{{introvideo}}?api=1&player_id=celebra-intro"
+        id="celebra-intro"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
       {{/introvideo}}
 
       {{^introvideo}}
-        <div class="celebra-video-placeholder">
-          Vídeo de boas-vindas
-        </div>
+      <div class="celebra-video-placeholder">
+        Vídeo de boas-vindas
+      </div>
       {{/introvideo}}
     </div>
-
   </section>
 
-  {{! =========================
-      MÓDULOS
-      ========================= }}
+  <!-- MÓDULOS -->
   <section class="celebra-modules">
-
-    <h2 class="celebra-section-title">
-      Módulos do curso
-    </h2>
+    <h2 class="celebra-section-title">Módulos do curso</h2>
 
     <div class="celebra-modules-grid">
+      {{#modules}}
+      <button
+        class="celebra-module-card"
+        data-cmid="{{cmid}}"
+        data-vimeoid="{{vimeoid}}"
+        data-name="{{name}}"
+        data-description="{{description}}"
+        data-progress="{{progress}}"
+      >
+        <strong>{{name}}</strong>
 
-  {{#modules}}
-  <button
-    class="celebra-module-card"
-    data-cmid="{{cmid}}"
-    data-progress="{{progress}}"
-    aria-label="Abrir {{name}}"
-  >
+        <div class="celebra-module-progress">
+          <span style="width: {{progress}}%"></span>
+        </div>
 
-    <div class="celebra-module-meta">
-      <strong>{{name}}</strong>
+        <small>{{progress}}% concluído</small>
+      </button>
+      {{/modules}}
 
-      <div class="celebra-module-progress">
-        <span style="width: {{progress}}%"></span>
+      {{^modules}}
+      <div class="celebra-empty">
+        Nenhuma atividade disponível.
       </div>
-
-      <small>{{progress}}% concluído</small>
+      {{/modules}}
     </div>
-
-  </button>
-  {{/modules}}
-
-  {{^modules}}
-  <div class="celebra-empty">
-    Nenhum módulo disponível neste curso.
-  </div>
-  {{/modules}}
-
-</div>
-
   </section>
 
 </div>
 
-{{! =========================
-    MODAL DE AULA
-    ========================= }}
+<!-- MODAL -->
 <div class="celebra-modal-backdrop" hidden></div>
 
-<div class="celebra-modal" hidden role="dialog" aria-modal="true">
-
+<div class="celebra-modal" hidden>
   <header class="celebra-modal-header">
-    <h3 class="celebra-modal-title">
-      Título da aula
-    </h3>
-
-    <button class="celebra-modal-close" aria-label="Fechar">
-      ✕
-    </button>
+    <h3 id="celebra-modal-title"></h3>
+    <button class="celebra-modal-close">✕</button>
   </header>
 
   <div class="celebra-modal-content">
-
     <div class="celebra-modal-video">
-      {{! Vimeo entra aqui depois via JS/Moodle }}
-      <div class="celebra-video-placeholder">
-        Player de vídeo
-      </div>
+      <iframe
+        id="celebra-vimeo-player"
+        src=""
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
     </div>
 
-    <div class="celebra-modal-sidebar">
+    <aside class="celebra-modal-sidebar">
+      <p id="celebra-modal-description"></p>
 
-      <div class="celebra-lesson-description">
-        <h4>Descrição</h4>
-        <p>
-          Descrição da aula, materiais e orientações.
-        </p>
-      </div>
-
-      <button class="celebra-complete-btn">
-        Marcar como concluído
+      <button
+        id="celebra-complete-btn"
+        class="celebra-complete-btn disabled"
+        disabled
+      >
+        Assista 90% para concluir
       </button>
-
-    </div>
-
+    </aside>
   </div>
-
 </div>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script src="{{{config.wwwroot}}}/theme/celebra/js/course.js"></script>
