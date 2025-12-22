@@ -1,64 +1,68 @@
 {{!
   Frontpage — Instituto Celebra
-  Dados:
-  - mycourses[]
-  - recommended[]
+  Estilo Netflix
+  - Cursos do aluno com progresso real
+  - Cursos recomendados entram depois
 }}
 
 <div class="celebra-frontpage">
 
-  {{! =========================
-      MEUS CURSOS
-      ========================= }}
+  <!-- NAV SIMPLES (link real) -->
+  <nav class="navlinks" aria-label="Navegação principal">
+    <a href="{{{ config.wwwroot }}}/index.php"
+       aria-current="page">
+      Página inicial
+    </a>
+  </nav>
+
+  <!-- MEUS CURSOS -->
   <section class="celebra-section">
     <h2 class="celebra-title">Meus Cursos</h2>
 
     <div class="celebra-carousel">
       {{#mycourses}}
-      <a href="{{url}}" class="celebra-poster celebra-poster--large" aria-label="{{fullname}}">
-        <img src="{{image}}" alt="{{fullname}}" loading="lazy">
+        <a href="{{url}}"
+           class="celebra-poster celebra-poster--large"
+           aria-label="Acessar curso {{fullname}}">
 
-        <div class="celebra-meta">
-          <h3 class="celebra-course-title">{{fullname}}</h3>
+          <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
-          <div class="celebra-progress">
-            <span style="width: {{progress}}%"></span>
+          <div class="celebra-meta">
+            <h3 class="celebra-course-title">{{fullname}}</h3>
+
+            <!-- Barra de progresso -->
+            <div class="celebra-progress">
+              <span style="width: {{progress}}%"></span>
+            </div>
+
+            <small class="celebra-progress-label">
+              {{progress}}% concluído
+            </small>
           </div>
-
-          <small class="celebra-progress-label">
-            {{progress}}% concluído
-          </small>
-        </div>
-      </a>
+        </a>
       {{/mycourses}}
 
       {{^mycourses}}
-      <div class="celebra-empty">
-        Você ainda não está matriculado em nenhum curso.
-      </div>
+        <div class="celebra-empty">
+          Você ainda não está matriculado em nenhum curso.
+        </div>
       {{/mycourses}}
     </div>
   </section>
 
-  {{! =========================
-      RECOMENDADOS
-      ========================= }}
-  {{#recommended}}
+  <!-- RECOMENDADOS (estrutura pronta) -->
   <section class="celebra-section">
-    <h2 class="celebra-title">Recomendados para você</h2>
+    <h2 class="celebra-title">Recomendados</h2>
 
     <div class="celebra-carousel">
       {{#recommended}}
-      <a href="{{url}}" class="celebra-poster celebra-poster--small" aria-label="{{fullname}}">
-        <img src="{{image}}" alt="{{fullname}}" loading="lazy">
-
-        <div class="celebra-meta">
-          <h3 class="celebra-course-title small">{{fullname}}</h3>
-        </div>
-      </a>
+        <a href="{{url}}"
+           class="celebra-poster celebra-poster--small"
+           aria-label="Ver curso {{fullname}}">
+          <img src="{{image}}" alt="{{fullname}}">
+        </a>
       {{/recommended}}
     </div>
   </section>
-  {{/recommended}}
 
 </div>

@@ -10,18 +10,18 @@
 
     <div class="celebra-video-box">
       {{#introvideo}}
-      <iframe
-        src="https://player.vimeo.com/video/{{introvideo}}?api=1&player_id=celebra-intro"
-        id="celebra-intro"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+        <iframe
+          id="celebra-intro-player"
+          src="https://player.vimeo.com/video/{{introvideo}}?api=1&player_id=celebra-intro-player"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
       {{/introvideo}}
 
       {{^introvideo}}
-      <div class="celebra-video-placeholder">
-        Vídeo de boas-vindas
-      </div>
+        <div class="celebra-video-placeholder">
+          Vídeo de boas-vindas
+        </div>
       {{/introvideo}}
     </div>
   </section>
@@ -32,44 +32,47 @@
 
     <div class="celebra-modules-grid">
       {{#modules}}
-      <button
-        class="celebra-module-card"
-        data-cmid="{{cmid}}"
-        data-vimeoid="{{vimeoid}}"
-        data-name="{{name}}"
-        data-description="{{description}}"
-        data-progress="{{progress}}"
-      >
-        <strong>{{name}}</strong>
+        <button
+          class="celebra-module-card"
+          data-cmid="{{cmid}}"
+          data-vimeoid="{{vimeoid}}"
+          data-name="{{name}}"
+          data-description="{{description}}"
+          data-progress="{{progress}}"
+          aria-label="Abrir aula {{name}}">
 
-        <div class="celebra-module-progress">
-          <span style="width: {{progress}}%"></span>
-        </div>
+          <div class="celebra-module-meta">
+            <strong>{{name}}</strong>
 
-        <small>{{progress}}% concluído</small>
-      </button>
+            <div class="celebra-module-progress">
+              <span style="width: {{progress}}%"></span>
+            </div>
+
+            <small>{{progress}}% concluído</small>
+          </div>
+        </button>
       {{/modules}}
 
       {{^modules}}
-      <div class="celebra-empty">
-        Nenhuma atividade disponível.
-      </div>
+        <div class="celebra-empty">
+          Nenhum módulo disponível neste curso.
+        </div>
       {{/modules}}
     </div>
   </section>
-
 </div>
 
 <!-- MODAL -->
 <div class="celebra-modal-backdrop" hidden></div>
 
-<div class="celebra-modal" hidden>
+<div class="celebra-modal" hidden role="dialog" aria-modal="true">
   <header class="celebra-modal-header">
-    <h3 id="celebra-modal-title"></h3>
-    <button class="celebra-modal-close">✕</button>
+    <h3 id="celebra-modal-title">Aula</h3>
+    <button class="celebra-modal-close" aria-label="Fechar">✕</button>
   </header>
 
   <div class="celebra-modal-content">
+
     <div class="celebra-modal-video">
       <iframe
         id="celebra-vimeo-player"
@@ -80,18 +83,20 @@
     </div>
 
     <aside class="celebra-modal-sidebar">
-      <p id="celebra-modal-description"></p>
+      <div class="celebra-lesson-description">
+        <h4>Descrição</h4>
+        <p id="celebra-modal-description">—</p>
+      </div>
 
       <button
         id="celebra-complete-btn"
         class="celebra-complete-btn disabled"
-        disabled
-      >
+        disabled>
         Assista 90% para concluir
       </button>
     </aside>
+
   </div>
 </div>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
-<script src="{{{config.wwwroot}}}/theme/celebra/js/course.js"></script>
