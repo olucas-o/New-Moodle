@@ -1,21 +1,15 @@
 {{!
-  Frontpage — Instituto Celebra
-  Estilo Netflix
-  - Cursos do aluno com progresso real
-  - Cursos recomendados entram depois
+  Frontpage - Instituto Celebra
+  Dados:
+  - mycourses[]
+  - recommended[]
 }}
 
 <div class="celebra-frontpage">
 
-  <!-- NAV SIMPLES (link real) -->
-  <nav class="navlinks" aria-label="Navegação principal">
-    <a href="{{{ config.wwwroot }}}/index.php"
-       aria-current="page">
-      Página inicial
-    </a>
-  </nav>
-
-  <!-- MEUS CURSOS -->
+  {{! =========================
+      MEUS CURSOS
+      ========================= }}
   <section class="celebra-section">
     <h2 class="celebra-title">Meus Cursos</h2>
 
@@ -23,14 +17,13 @@
       {{#mycourses}}
         <a href="{{url}}"
            class="celebra-poster celebra-poster--large"
-           aria-label="Acessar curso {{fullname}}">
+           aria-label="{{fullname}}">
 
           <img src="{{image}}" alt="{{fullname}}" loading="lazy">
 
           <div class="celebra-meta">
             <h3 class="celebra-course-title">{{fullname}}</h3>
 
-            <!-- Barra de progresso -->
             <div class="celebra-progress">
               <span style="width: {{progress}}%"></span>
             </div>
@@ -50,7 +43,9 @@
     </div>
   </section>
 
-  <!-- RECOMENDADOS (estrutura pronta) -->
+  {{! =========================
+      RECOMENDADOS
+      ========================= }}
   <section class="celebra-section">
     <h2 class="celebra-title">Recomendados</h2>
 
@@ -58,8 +53,15 @@
       {{#recommended}}
         <a href="{{url}}"
            class="celebra-poster celebra-poster--small"
-           aria-label="Ver curso {{fullname}}">
-          <img src="{{image}}" alt="{{fullname}}">
+           aria-label="{{fullname}}">
+
+          <img src="{{image}}" alt="{{fullname}}" loading="lazy">
+
+          <div class="celebra-meta">
+            <h3 class="celebra-course-title small">
+              {{fullname}}
+            </h3>
+          </div>
         </a>
       {{/recommended}}
     </div>
