@@ -1,8 +1,7 @@
 {{!
-  Frontpage - Instituto Celebra
-  Dados:
-  - mycourses[]
-  - recommended[]
+  Frontpage — Instituto Celebra
+  Página inicial estilo Netflix
+  NÃO possui navegação de retorno
 }}
 
 <div class="celebra-frontpage">
@@ -15,24 +14,7 @@
 
     <div class="celebra-carousel">
       {{#mycourses}}
-        <a href="{{url}}"
-           class="celebra-poster celebra-poster--large"
-           aria-label="{{fullname}}">
-
-          <img src="{{image}}" alt="{{fullname}}" loading="lazy">
-
-          <div class="celebra-meta">
-            <h3 class="celebra-course-title">{{fullname}}</h3>
-
-            <div class="celebra-progress">
-              <span style="width: {{progress}}%"></span>
-            </div>
-
-            <small class="celebra-progress-label">
-              {{progress}}% concluído
-            </small>
-          </div>
-        </a>
+        {{> theme_celebra/course_poster }}
       {{/mycourses}}
 
       {{^mycourses}}
@@ -51,16 +33,10 @@
 
     <div class="celebra-carousel">
       {{#recommended}}
-        <a href="{{url}}"
-           class="celebra-poster celebra-poster--small"
-           aria-label="{{fullname}}">
-
+        <a href="{{buyurl}}" class="celebra-poster celebra-poster--small">
           <img src="{{image}}" alt="{{fullname}}" loading="lazy">
-
           <div class="celebra-meta">
-            <h3 class="celebra-course-title small">
-              {{fullname}}
-            </h3>
+            <h3 class="celebra-course-title small">{{fullname}}</h3>
           </div>
         </a>
       {{/recommended}}

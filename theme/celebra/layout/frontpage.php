@@ -1,15 +1,25 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/coursecatlib.php');
+echo $OUTPUT->doctype();
+?>
 
-$context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->set_url('/');
-$PAGE->set_pagelayout('frontpage');
+<html <?php echo $OUTPUT->htmlattributes(); ?>>
+<head>
+    <title><?php echo $SITE->fullname; ?></title>
+    <?php echo $OUTPUT->standard_head_html(); ?>
+</head>
 
-$renderer = $PAGE->get_renderer('theme_celebra');
+<body <?php echo $OUTPUT->body_attributes(['celebra-frontpage-layout']); ?>>
 
-echo $OUTPUT->header();
-echo $renderer->render_frontpage();
-echo $OUTPUT->footer();
+<?php echo $OUTPUT->standard_top_of_body_html(); ?>
+
+<div id="page" class="container-fluid">
+    <main id="page-content">
+        <?php echo $OUTPUT->main_content(); ?>
+    </main>
+</div>
+
+<?php echo $OUTPUT->standard_end_of_body_html(); ?>
+</body>
+</html>
